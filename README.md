@@ -31,15 +31,22 @@ Basically it is formal definition of app / page structure
 
 ### Actions
 
-Here is a list of possible actions, they must be handled by functions in code
+Here is a list of possible actions,
+they must be handled by your test functions in CustomActions namespace
 
 ### Checks
 
-Here is a list of possible checks, they must be handled by functions in code
+Here is a list of possible checks,
+they must be handled by your test functions in CustomChecks namespace
 
-#HOW TO RUN
+## How to run
 
 1. Clone the repository
+
+```bash
+git clone git@github.com:apishore/experiment-qa.git
+```
+
 2. Install dependencies
 
 ```bash
@@ -52,17 +59,23 @@ npm install
 npm run generate
 ```
 
-4. Check tests at stc/tests folder
+4. Check generated tests in the ./src/tests folder
 
 ## How to collect test ids to build subjects?
-In depends on your project structure, write simple script to collect test ids from 
-your project source code or software requirements.
+
+It depends on your project structure.
+
+- write simple script to collect test ids from
+  your project source code or software requirements.
+- Maintain it manually
+- Export them from your UI design system
 
 ## How to add more tests for my UI?
-1. Login to any AI system
-2. Pass your source code and software requirements
-3. Give a sample of test plan
-4. Ask to generate test plan for certain cases
-5. Copy generated test plan to the google sheet
-7. Fix obvious mistakes
-8. Generate tests agains
+
+- Login to any AI system
+- Give a sample of test plan
+- Ask to generate test plan for certain cases
+- Copy generated test plan to the google sheet
+- Fix obvious mistakes, add new actions and checks if required
+- Add support of new actions and checks into the code generator
+- Generate tests and run them
