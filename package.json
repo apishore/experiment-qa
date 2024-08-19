@@ -48,7 +48,7 @@
     }
   },
   "scripts": {
-    "generate": "env-cmd -f ./env/local.env ts-node-dev -r tsconfig-paths/register --transpile-only src/generator.ts",
+    "generate": "env-cmd -f ./env/local.env ts-node-dev -r tsconfig-paths/register --transpile-only --respawn src/generator.ts",
     "test": "react-scripts test"
   },
   "browserslist": {

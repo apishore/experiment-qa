@@ -3,54 +3,83 @@ import path from 'path';
 import xlsx from 'xlsx';
 
 interface TestStep {
+    description: string;
     subject: string;
     action: string;
     actionParam: string;
     check: string;
     checkParam: string;
+    report: string;
+    issueNumber: string;
 }
 
 // Load the spreadsheet
 const workbook = xlsx.readFile('./DSL/TestPlan1.xlsx');
-const executionSheet = xlsx.utils.sheet_to_json<TestStep>(workbook.Sheets['Execution']);
+const executionSheet = xlsx.utils.sheet_to_json<any>(workbook.Sheets['Execution']).map(src => {
+    return {
+        description: src['__EMPTY'] || "",
+        subject: src['__EMPTY_1'] || "",
+        action: src['__EMPTY_2'] || "",
+        actionParam: src['__EMPTY_3'] || "",
+        check: src['__EMPTY_4'] || "",
+        checkParam: src['__EMPTY_5'] || "",
+        report: src['__EMPTY_6'] || "",
+        issueNumber: src['__EMPTY_7'] || "",
+    } as TestStep;
+});
 
 // Actions Map
 const actionsMap: { [key: string]: (subject: string, param: string) => string } = {
-    click: (subject) => `userEvent.click(screen.getByTestId("${subject}"));`,
-    type: (subject, param) => `userEvent.type(screen.getByTestId("${subject}"), "${param}");`,
-    hover: (subject) => `userEvent.hover(screen.getByTestId("${subject}"));`,
+    "Open": (subject) => `CustomActions.openBrowser("${subject}");`,
+    "Wait for redirect": (subject, param) => `await CustomActions.waitFor("${param}");`,
+    "hover": (subject) => `userEvent.hover(screen.getByTestId("${subject}"));`,
+    "Mouse around (random)": (subject) => `CustomActions.moveMouseAround("${subject}", "random");`,
     // Add other actions as needed
 };
 
 const defaultAction = (action: string) => (subject: string, param: string) => {
-    `//TODO: Add action handler for "${action}"`
+    return `//TODO: Add action handler for "${action}"`
 }
 
 const defaultCheck = (check: string) => (subject: string, param: string) => {
-    `//TODO: Add check handler for "${check}"`
+    return `//TODO: Add check handler for "${check}"`
 }
 
 // Checks Map
 const checksMap: { [key: string]: (subject: string, param: string) => string } = {
-    visible: (subject) => `expect(screen.getByTestId("${subject}")).toBeVisible();`,
+    "Visible": (subject) => `expect(screen.getByTestId("${subject}")).toBeVisible();`,
     hasValue: (subject, param) => `expect(screen.getByTestId("${subject}")).toHaveValue("${param}");`,
     hasClass: (subject, param) => `expect(screen.getByTestId("${subject}")).toHaveClass("${param}");`,
+    "Clean browser logs": (subject, param) => `TestContext.checkNoLogsSinceStepStart();`,
     // Add other checks as needed
 };
 
 // Generate test scenarios
 const generateTestScenarios = (executionData: TestStep[]) => {
-    return executionData.map((step, index) => {
-        const actionCode = (actionsMap[step.action] || defaultAction(step.action)) (step.subject, step.actionParam);
-        const checkCode = (checksMap[step.check] || defaultCheck)(step.subject, step.checkParam);
 
-        return `
+    const res = []
+    for (let index = 1; index < executionData.length; index++) {
+        const step = executionData[index];
+        console.log(step);
+
+        const actionCode = step.action === "" ? "" : (actionsMap[step.action] || defaultAction(step.action))(step.subject, step.actionParam);
+        const checkCode = step.check === "" ? "" : (checksMap[step.check] || defaultCheck(step.check))(step.subject, step.checkParam);
+
+        if(actionCode !== "" || checkCode !== "") {
+            res.push(`
       // Step ${index + 1}
+    {
+      TestContext.beforeStep()
+      const subject = findElementByTestId("${step.subject}");
+      expect(subject).toBeInTheDocument();
       ${actionCode}
       ${checkCode}
-    `;
-    }).join('\n');
-};
+      TestContext.afterStep()
+    }`);
+        }
+    }
+    return res.join('\n\t\t');
+}
 
 // Generate the final test file content
 const generateTestFileContent = (testName: string, executionData: TestStep[]) => {
@@ -58,10 +87,10 @@ const generateTestFileContent = (testName: string, executionData: TestStep[]) =>
     return `
     import { render, screen } from '@testing-library/react';
     import userEvent from '@testing-library/user-event';
-
+    import {CustomActions, findElementByTestId, TestContext, CustomChecks} from "src/tests/CustomActions";
+      
     describe("${testName}", () => {
-      test("renders ${testName} and interacts correctly", () => {
-        render(<${testName} />);
+      test("renders ${testName} and interacts correctly", async () => {
         ${stepsCode}
       });
     });
