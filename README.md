@@ -1,46 +1,68 @@
-
 # experiment-qa
 
-I need a code generator script to parse such files and build UI test scenarios.
+Boilerplate for QA automation experiment
 
-1. script must be built in typescript
-2. script must produce test using  '@testing-library/react'
+Tests are defined in the google docs.
 
-3. Sample code to be generated
-4. 
-```
-import {render, screen} from '@testing-library/react'
-describe("SearchForm", () => {
-   test("renders SearchForm", () => {
-    render(<SearchForm/>);
-    expect(screen.getByRole("heading", { name: /location search/i })
-        ).toBeVisible();
-        
-    expect(screen.getByRole("textbox", { name: /choose an origin \(optional\)/i })
-        ).toBeVisible();
+https://drive.google.com/drive/u/0/folders/19s1owOzo9azyuJnRouqQQ7JG5LpGnqzP
 
-    expect(screen.getByRole("textbox", { name: /choose a destination/i})
-        ).toBeVisible();
-        
-    expect(screen.getByRole("button", { name: /search/i })
-        ).toBeVisible();
-  });
-});
-```
+For now we are going to use google sheets as a source of test data.
 
-About spreadsheet structure
-4. Execution is the test logic. Each row has 
-4.1. Subject - concatenated testId from DOM (test-id attribute)
-4.2 Action - What to do in test step (click, hover element enter text, etc.)
-4.3 Action parameter - text to enter, how to hover element, etc.
-4.4 Check - what to check after action (class of element, value of input, etc.)
-4.5 Check parameter - value to use in check
+Current implementation rely on locally stored /DSL/TestPlan.xlsx file. It is a copy of the google sheet.
 
-Subjects
-On this tab subjects constructed from test ids. Basically it is formal definition of page structure
+## Spreadsheet structure
 
-Actions
+### Execution
+
+- Step - description of the test step
+- Subject - concatenated testId from DOM (test-id attribute)
+- Action - What to do in this test step (click, hover element enter text, etc.)
+- Action parameter - text to enter, how to hover element, there to store ID from server, etc.
+- Check - How to check subject state (class of element, value of input, etc.)
+- Check parameter - value to use in check logic
+- Wait - how long to wait before executing check
+- Report - what to report in case of failure
+- Bug number - bug number to link to in case of failure
+
+### Subjects
+
+On this tab subjects constructed from test ids.
+Basically it is formal definition of app / page structure
+
+### Actions
+
 Here is a list of possible actions, they must be handled by functions in code
 
-Checks
+### Checks
+
 Here is a list of possible checks, they must be handled by functions in code
+
+#HOW TO RUN
+
+1. Clone the repository
+2. Install dependencies
+
+```bash
+npm install
+```
+
+3. Run code generator
+
+```bash
+npm run generate
+```
+
+4. Check tests at stc/tests folder
+
+## How to collect test ids to build subjects?
+In depends on your project structure, write simple script to collect test ids from 
+your project source code or software requirements.
+
+## How to add more tests for my UI?
+1. Login to any AI system
+2. Pass your source code and software requirements
+3. Give a sample of test plan
+4. Ask to generate test plan for certain cases
+5. Copy generated test plan to the google sheet
+7. Fix obvious mistakes
+8. Generate tests agains
