@@ -35,4 +35,10 @@ export namespace TestContext {
 export namespace CustomChecks {
     export function checkClass(subject: string, param: string) {
     }
+
+    export function waitBeforeCheck(number: number) {
+        // Project specific implementation
+        // Most likely a sleep function
+        return new Promise((resolve) => setTimeout(resolve, number));
+    }
 }

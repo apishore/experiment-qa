@@ -11,6 +11,7 @@ interface TestStep {
     checkParam: string;
     report: string;
     issueNumber: string;
+    waitBeforeCheck: number;
 }
 
 // Load the spreadsheet
@@ -23,8 +24,9 @@ const executionSheet = xlsx.utils.sheet_to_json<any>(workbook.Sheets['Execution'
         actionParam: src['__EMPTY_3'] || "",
         check: src['__EMPTY_4'] || "",
         checkParam: src['__EMPTY_5'] || "",
-        report: src['__EMPTY_6'] || "",
-        issueNumber: src['__EMPTY_7'] || "",
+        waitBeforeCheck: parseInt(src['__EMPTY_6'] || "30"),
+        report: src['__EMPTY_7'] || "",
+        issueNumber: src['__EMPTY_8'] || "",
     } as TestStep;
 });
 
@@ -65,17 +67,22 @@ const generateTestScenarios = (executionData: TestStep[]) => {
         const actionCode = step.action === "" ? "" : (actionsMap[step.action] || defaultAction(step.action))(step.subject, step.actionParam);
         const checkCode = step.check === "" ? "" : (checksMap[step.check] || defaultCheck(step.check))(step.subject, step.checkParam);
 
-        if(actionCode !== "" || checkCode !== "") {
+        if (actionCode !== "" || checkCode !== "") {
             res.push(`
-      // Step ${index + 1}
-    {
-      TestContext.beforeStep()
-      const subject = findElementByTestId("${step.subject}");
-      expect(subject).toBeInTheDocument();
-      ${actionCode}
-      ${checkCode}
-      TestContext.afterStep()
-    }`);
+      // Step ${index} - ${step.description}
+      {
+        TestContext.beforeStep()
+        // find subject
+        const subject = findElementByTestId("${step.subject}");
+        expect(subject).toBeInTheDocument();
+        // perform action if defined
+        ${actionCode}
+        // always wait before check even if check is not defined. It resolves side effect of future test modifications.
+        await CustomChecks.waitBeforeCheck(${step.waitBeforeCheck});
+        // perform check if defined
+        ${checkCode}
+        TestContext.afterStep()
+      }`);
         }
     }
     return res.join('\n\t\t');
@@ -84,17 +91,17 @@ const generateTestScenarios = (executionData: TestStep[]) => {
 // Generate the final test file content
 const generateTestFileContent = (testName: string, executionData: TestStep[]) => {
     const stepsCode = generateTestScenarios(executionData);
-    return `
-    import { render, screen } from '@testing-library/react';
-    import userEvent from '@testing-library/user-event';
-    import {CustomActions, findElementByTestId, TestContext, CustomChecks} from "src/tests/CustomActions";
-      
-    describe("${testName}", () => {
-      test("renders ${testName} and interacts correctly", async () => {
-        ${stepsCode}
-      });
-    });
-  `;
+    return `//GENERATED FILE - DO NOT EDIT!
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import {CustomActions, findElementByTestId, TestContext, CustomChecks} from "src/tests/CustomActions";
+  
+describe("${testName}", () => {
+  test("renders ${testName} and interacts correctly", async () => {
+    ${stepsCode}
+  });
+});
+`;
 };
 
 // Write test file
