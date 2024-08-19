@@ -4,8 +4,8 @@
     /* ----------------------------------------------- Basic Options */
     "target": "es2023",
     "outDir": "build",
-    //    "module": "commonjs",
-    "module": "esnext",
+        "module": "commonjs",
+//    "module": "esnext",
     "incremental": true,
     /* ----------------------------------------------- Strict Type-Checking Options */
     "strict": true,
