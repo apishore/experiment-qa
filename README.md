@@ -8,7 +8,7 @@ https://drive.google.com/drive/u/0/folders/19s1owOzo9azyuJnRouqQQ7JG5LpGnqzP
 
 For now we are going to use google sheets as a source of test data.
 
-Current implementation rely on locally stored /DSL/TestPlan.xlsx file. It is a copy of the google sheet.
+Current implementation rely on locally stored /DSL/TestPlan.xlsx file. It is a copy of the google spreadsheet.
 
 ## Spreadsheet structure
 
