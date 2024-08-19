@@ -73,9 +73,9 @@ It depends on your project structure.
 ## How to add more tests for my UI?
 
 - Login to any AI system
-- Give a sample of test plan
-- Ask to generate test plan for certain cases
-- Copy generated test plan to the google sheet
+- Upload sample test plan with well defined subjects, actions and checks
+- Ask to create execution flow by proper prompt
+- Copy execution flow to the google sheet
 - Fix obvious mistakes, add new actions and checks if required
 - Add support of new actions and checks into the code generator
 - Generate tests and run them
