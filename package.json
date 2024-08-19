@@ -1,0 +1,85 @@
+{
+  "name": "experiment-qa",
+  "version": "0.0.081901",
+  "private": true,
+  "dependencies": {
+    "@hookform/resolvers": "^3.9.0",
+    "@stripe/react-stripe-js": "^2.8.0",
+    "@stripe/stripe-js": "^2.4.0",
+    "@types/lodash.debounce": "^4.0.9",
+    "@types/node": "^18.19.45",
+    "@types/parse-full-name": "^1.2.5",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@types/uuid": "^9.0.8",
+    "@uidotdev/usehooks": "^2.4.1",
+    "countries-list": "^3.1.1",
+    "i18n-postal-address": "^0.9.2",
+    "jotai": "^2.9.3",
+    "jotai-location": "^0.5.5",
+    "lodash.debounce": "^4.0.8",
+    "match-sorter": "^6.3.4",
+    "mobx": "^6.13.1",
+    "mobx-react": "^9.1.1",
+    "mobx-state-tree": "^5.4.2",
+    "parse-full-name": "^1.2.6",
+    "preval.macro": "^5.0.0",
+    "react": "^18.3.1",
+    "react-device-detect": "^2.2.3",
+    "react-dom": "^18.3.1",
+    "react-hook-form": "^7.52.2",
+    "react-hotkeys-hook": "^4.5.0",
+    "react-icons": "^4.12.0",
+    "react-json-view-lite": "^1.4.0",
+    "react-pageflip": "^2.0.3",
+    "react-router-dom": "^6.26.1",
+    "schema-typed": "^2.2.2",
+    "sort-by": "^0.0.2",
+    "usehooks-ts": "^2.16.0",
+    "uuid": "^9.0.1",
+    "web-vitals": "^2.1.4",
+    "zod": "^3.23.8"
+  },
+  "overrides": {
+    "react-error-overlay": "6.0.9",
+    "react-scripts": {
+      "typescript": "5.5.4",
+      "eslint": "^8.56.0"
+    }
+  },
+  "scripts": {
+    "generate": "env-cmd -f ./env/local.env ts-node-dev -r tsconfig-paths/register --transpile-only src/generator.ts",
+    "test": "react-scripts test"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "7.21.0-placeholder-for-preset-env.2",
+    "@eslint/js": "^9.9.0",
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "@types/jest": "^27.5.2",
+    "concurrently": "^8.2.2",
+    "env-cmd": "^10.1.0",
+    "eslint": "^8.57.0",
+    "less": "^4.2.0",
+    "less-watch-compiler": "^1.16.3",
+    "lessc-watch": "^1.2.0",
+    "react-scripts": "^5.0.1",
+    "typescript": "^5.5.4",
+    "typescript-eslint": "^7.18.0",
+    "webpack-cli": "^5.1.4",
+    "ts-node-dev": "^2.0.0"
+  }
+}

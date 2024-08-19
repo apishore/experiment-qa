@@ -1,0 +1,50 @@
+//==================================================== HANDBOOK-DASHBOARD
+{
+  "compilerOptions": {
+    /* ----------------------------------------------- Basic Options */
+    "target": "es2023",
+    "outDir": "build",
+    //    "module": "commonjs",
+    "module": "esnext",
+    "incremental": true,
+    /* ----------------------------------------------- Strict Type-Checking Options */
+    "strict": true,
+    "noImplicitOverride": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "strictBindCallApply": true,
+    "strictPropertyInitialization": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
+    /* ----------------------------------------------- Module Resolution Options */
+    "moduleResolution": "node",
+    "baseUrl": ".",
+    "esModuleInterop": true,
+    /* ----------------------------------------------- Experimental Options */
+    "experimentalDecorators": true,
+    //REVIEW: A type referenced in a decorated signature must be imported with 'import type' or a namespace import when 'isolatedModules' and 'emitDecoratorMetadata' are enabled.
+    //    "emitDecoratorMetadata": true,
+    /* ----------------------------------------------- Advanced Options */
+    //    "forceConsistentCasingInFileNames": true,
+    /* ----------------------------------------------- Libs */
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    /* ----------------------------------------------- Rest */
+    "skipLibCheck": true,
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx"
+  },
+  "include": [
+    "src/**/*"
+  ]
+}
