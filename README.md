@@ -79,3 +79,5 @@ It depends on your project structure.
 - Fix obvious mistakes, add new actions and checks if required
 - Add support of new actions and checks into the code generator
 - Generate tests and run them
+
+![img.png](img.png)
